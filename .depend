@@ -1,5 +1,6 @@
 actual.$(obj-suffix):\
     actual.C\
+    /home/vegnesh/codes/jvinstall/include/libmesh/analytic_function.h\
     /home/vegnesh/codes/jvinstall/include/libmesh/auto_ptr.h\
     /home/vegnesh/codes/jvinstall/include/libmesh/boundary_info.h\
     /home/vegnesh/codes/jvinstall/include/libmesh/compare_types.h\
