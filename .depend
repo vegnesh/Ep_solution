@@ -114,7 +114,8 @@ actual.$(obj-suffix):\
     /home/vegnesh/codes/jvinstall/include/libmesh/variable.h\
     /home/vegnesh/codes/jvinstall/include/libmesh/variant_filter_iterator.h\
     /home/vegnesh/codes/jvinstall/include/libmesh/vector_value.h\
-    /home/vegnesh/codes/jvinstall/include/libmesh/zero_function.h
+    /home/vegnesh/codes/jvinstall/include/libmesh/zero_function.h\
+    evsol.h
 evsol.$(obj-suffix):\
     evsol.C\
     evsol.h

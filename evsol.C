@@ -154,7 +154,7 @@ void getdatafromfile (char *filename, double c[15][2], int &nval)
     double coords[15][2];
    nval = 0;
 /*	 Reading from a file to get data	*/
-   if(!flag)
+   
 {
     flag = !flag;
 
@@ -174,7 +174,7 @@ int pos=0,flag=0;
            myfile.seekg(pos);
            myfile>>coords[noc][0]>>coords[noc][1];
 	   ++noc;   
-	   cout<<"\n R="<<coords[noc-1][0]<<" Z="<<coords[noc-1][1]<<"\n";
+//	   cout<<"\n R="<<coords[noc-1][0]<<" Z="<<coords[noc-1][1]<<"\n";
          }
 
     }
