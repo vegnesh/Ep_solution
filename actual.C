@@ -252,7 +252,7 @@ void assemble_elasticity(EquationSystems & es,
           for (unsigned int i=0; i<n_u_dofs; i++)
             for (unsigned int j=0; j<n_u_dofs; j++)
               {
-                  Kuu(i,j) += JxW[qp]*(dphi[i][qp]*dphi[j][qp] )*x ; 
+                  Kuu(i,j) += JxW[qp]*(dphi[i][qp]*dphi[j][qp] + phi[i][qp]*phi[j][qp]/x/x)*x ; 
               }
 
           for (unsigned int i=0; i<n_u_dofs; i++)
@@ -270,9 +270,9 @@ void assemble_elasticity(EquationSystems & es,
           for (unsigned int i=0; i<n_v_dofs; i++)
             for (unsigned int j=0; j<n_v_dofs; j++)
               {
-               Kvv(i,j) +=JxW[qp]*(dphi[i][qp]*dphi[j][qp])*x ;            
+               Kvv(i,j) +=JxW[qp]*(dphi[i][qp]*dphi[j][qp] + phi[i][qp]*phi[j][qp]/x/x )*x ;            
               }
-             Real fxyz = exact_solution(x,y)*pival*pival/2.0 + pival*0.5*sin(0.5*pival*x)*sin(0.5*pival*y)/x ;
+             Real fxyz = exact_solution(x,y)*pival*pival/2.0 + pival*0.5*sin(0.5*pival*x)*sin(0.5*pival*y)/x + exact_solution(x,y)/x/x;
              const Real fxy = -(exact_solution(x, y-eps) +
                         exact_solution(x, y+eps) +
                         exact_solution(x-eps, y) +
