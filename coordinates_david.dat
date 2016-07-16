@@ -1,0 +1,10 @@
+# Note comments start with a hashtag
+# This file contains the r and z coordinates of the ICP Plasma used in David's Thesis
+# These can be used to solve for Ev in the coordinate system in an analytical manner
+# This is a test file
+
+
+#R	Z locations in mm
+19.0	40.0
+19.0	40.0
+19.0	40.0

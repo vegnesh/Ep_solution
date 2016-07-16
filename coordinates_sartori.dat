@@ -1,0 +1,13 @@
+# Note comments start with a hashtag
+# This file contains the r and z coordinates of the ICP Plasma used in Sartori Thesis
+# These can be used to solve for Ev in the coordinate system in an analytical manner
+# This is a test file
+
+
+#R	Z locations in mm
+108.5	100.0
+108.5	150.0
+108.5	200.0
+108.5	250.0
+108.5 	300.0
+108.5	350.0
