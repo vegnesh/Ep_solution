@@ -110,7 +110,7 @@ int main (int argc, char ** argv)
   // Create a 2D mesh distributed across the default MPI communicator.
   Mesh mesh(init.comm(), dim);
   MeshTools::Generation::build_square (mesh,
-                                       15, 15,
+                                       20, 20,
                                        0., 1.,
                                        -1., 1.,
                                        QUAD9);
@@ -242,13 +242,13 @@ void assemble_elasticity(EquationSystems & es,
 
       Fu.reposition (u_var*n_u_dofs, n_u_dofs);
       Fv.reposition (v_var*n_u_dofs, n_v_dofs);
-
+      const Real eps = 1.e-3;
+      const Real Kfactor = 10.0;
       for (unsigned int qp=0; qp<qrule.n_points(); qp++)
         {
           const Real x = q_point[qp](0);
           const Real y = q_point[qp](1);
-          const Real eps = 1.e-3;
-
+                    
           for (unsigned int i=0; i<n_u_dofs; i++)
             for (unsigned int j=0; j<n_u_dofs; j++)
               {
@@ -258,13 +258,13 @@ void assemble_elasticity(EquationSystems & es,
           for (unsigned int i=0; i<n_u_dofs; i++)
             for (unsigned int j=0; j<n_v_dofs; j++)
               {
-               Kuv(i,j) = 0.0;          
+               Kuv(i,j) += JxW[qp]*(phi[i][qp]*phi[j][qp])*Kfactor*x;          
               }
 
           for (unsigned int i=0; i<n_v_dofs; i++)
             for (unsigned int j=0; j<n_u_dofs; j++)
               {
-               Kvu(i,j) = 0.0;
+               Kvu(i,j) += JxW[qp]*(phi[i][qp]*phi[j][qp])*Kfactor*x ;
               }
 
           for (unsigned int i=0; i<n_v_dofs; i++)
@@ -272,18 +272,12 @@ void assemble_elasticity(EquationSystems & es,
               {
                Kvv(i,j) +=JxW[qp]*(dphi[i][qp]*dphi[j][qp] + phi[i][qp]*phi[j][qp]/x/x )*x ;            
               }
-             Real fxyz = exact_solution(x,y)*pival*pival/2.0 + pival*0.5*sin(0.5*pival*x)*sin(0.5*pival*y)/x + exact_solution(x,y)/x/x;
-             const Real fxy = -(exact_solution(x, y-eps) +
-                        exact_solution(x, y+eps) +
-                        exact_solution(x-eps, y) +
-                        exact_solution(x+eps, y) -
-                        4.*exact_solution(x, y))/eps/eps;
-
-
-                  for (unsigned int i=0; i<n_u_dofs; i++)
+             Real fxyz = exact_solution(x,y)*pival*pival/2.0 + pival*0.5*sin(0.5*pival*x)*sin(0.5*pival*y)/x + exact_solution(x,y)/x/x + Kfactor*exact_solution2(x,y);
+             Real fxy = exact_solution2(x,y)*pival*pival/2.0 - pival*0.5*cos(0.5*pival*x)*cos(0.5*pival*y)/x + exact_solution2(x,y)/x/x + Kfactor*exact_solution(x,y);
+                 for (unsigned int i=0; i<n_u_dofs; i++)
                   Fu(i) += JxW[qp]*fxyz*phi[i][qp]*x;
                   for (unsigned int i = 0;i<n_v_dofs;i++)
-                  Fv(i) += JxW[qp]*fxyz*phi[i][qp]*x;
+                  Fv(i) += JxW[qp]*fxy*phi[i][qp]*x;
         }
  	
         for (unsigned int s=0; s<elem->n_sides(); s++)
@@ -341,7 +335,7 @@ void assemble_elasticity(EquationSystems & es,
                                 Kvv(n,n) = 1.;
 
     				Fu(n)   = exact_solution(xf,yf);			
-                                Fv(n)   = exact_solution(xf,yf);
+                                Fv(n)   = exact_solution2(xf,yf);
 			      }
     			}
       		    }
